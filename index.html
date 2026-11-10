@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Game Hay 24h - Cổng Game Trực Tuyến</title>
+    <!-- Tailwind CSS cho thiết kế hiện đại -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        arcade: {
+                            50: '#fdf4ff',
+                            500: '#d946ef',
+                            600: '#c026d3',
+                            700: '#a21caf',
+                            900: '#701a75'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Tối ưu hóa chạm và chống cuộn trang khi chơi game trên mobile */
+        * {
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        body {
+            overscroll-behavior-y: none;
+            touch-action: manipulation;
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(217, 70, 239, 0.5), inset 0 0 15px rgba(217, 70, 239, 0.2);
+        }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(217, 70, 239, 0.8), 0 0 20px rgba(217, 70, 239, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d946ef;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
+
+    <!-- THANH ĐIỀU HƯỚNG (HEADER) -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="goHome()">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-fuchsia-600 to-pink-500 flex items-center justify-center neon-glow">
+                <i class="fa-solid fa-gamepad text-white text-xl"></i>
+            </div>
+            <span class="text-xl font-black tracking-wider bg-gradient-to-r from-fuchsia-400 to-pink-500 bg-clip-text text-transparent neon-text">
+                Game Hay 24h
+            </span>
+        </div>
+
+        <div class="flex items-center space-x-2 sm:space-x-4">
+            <!-- Nút Âm Thanh -->
+            <button id="audioToggleBtn" onclick="toggleAudio()" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center border border-slate-700 transition" title="Bật/Tắt âm thanh">
+                <i id="audioIcon" class="fa-solid fa-volume-high text-fuchsia-400"></i>
+            </button>
+            <!-- Nút Chế độ Sáng/Tối -->
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center border border-slate-700 transition" title="Đổi giao diện">
+                <i id="themeIcon" class="fa-solid fa-moon text-yellow-400"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 flex flex-col">
+
+        <!-- 1. TRANG CHỦ -->
+        <section id="homeView" class="space-y-6">
+            <!-- Banner -->
+            <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-purple-900 via-fuchsia-900 to-slate-900 p-6 sm:p-10 border border-fuchsia-500/30 neon-glow flex flex-col md:flex-row items-center justify-between">
+                <div class="space-y-4 max-w-xl z-10 text-center md:text-left">
+                    <span class="inline-block px-3 py-1 rounded-full bg-fuchsia-500/20 border border-fuchsia-500 text-fuchsia-300 text-xs font-bold tracking-wider uppercase">
+                        Cổng Game HTML5 Hàng Đầu
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+                        Thế Giới Giải Trí <span class="text-fuchsia-400 neon-text">Đỉnh Cao</span>
+                    </h1>
+                    <p class="text-slate-300 text-sm sm:text-base">
+                        Khám phá 4 tựa game siêu hấp dẫn: Chém Hoa Quả, Đua Xe Tốc Độ, Rắn Săn Mồi Cổ Điển và Xếp Hình Trí Tuệ. Hỗ trợ chơi mượt mà trên mọi thiết bị!
+                    </p>
+                    <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+                        <button onclick="openModeSelect('fruit')" class="px-6 py-3 rounded-xl bg-gradient-to-r from-fuchsia-600 to-pink-600 font-bold hover:opacity-90 transition shadow-lg shadow-fuchsia-600/30">
+                            <i class="fa-solid fa-play mr-2"></i> Chơi Ngay
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-6 md:mt-0 z-10">
+                    <div class="w-48 h-48 sm:w-64 sm:h-64 rounded-2xl bg-fuchsia-500/10 border border-fuchsia-500/40 flex items-center justify-center relative overflow-hidden group">
+                        <i class="fa-solid fa-trophy text-7xl sm:text-9xl text-fuchsia-400/80 group-hover:scale-110 transition duration-500"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Khu vực Tiện ích (Điểm cao & Gần đây) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5">
+                    <h3 class="text-lg font-bold text-fuchsia-400 mb-3 flex items-center">
+                        <i class="fa-solid fa-medal mr-2"></i> Kỷ Lục Cao Nhất Của Bạn
+                    </h3>
+                    <div id="highScoreSummary" class="grid grid-cols-2 gap-3 text-sm">
+                        <!-- Render bằng JS -->
+                    </div>
+                </div>
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 sm:p-5">
+                    <h3 class="text-lg font-bold text-pink-400 mb-3 flex items-center">
+                        <i class="fa-solid fa-history mr-2"></i> Game Vừa Chơi Gần Đây
+                    </h3>
+                    <div id="recentGamesList" class="flex flex-col space-y-2 text-sm text-slate-300">
+                        <!-- Render bằng JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danh sách Game dạng thẻ -->
+            <div>
+                <h2 class="text-2xl font-black text-white mb-4 flex items-center">
+                    <i class="fa-solid fa-fire text-orange-500 mr-2"></i> Danh Sách Trò Chơi
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                    <!-- Thẻ 1: Chém Hoa Quả -->
+                    <div class="bg-slate-900 border border-slate-800 hover:border-fuchsia-500 rounded-2xl overflow-hidden flex flex-col transition duration-300 group">
+                        <div class="h-40 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center relative overflow-hidden">
+                            <i class="fa-solid fa-lemon text-6xl text-white/90 group-hover:rotate-12 transition duration-300"></i>
+                            <span class="absolute top-3 right-3 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-white">Arcade</span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Chém Hoa Quả</h3>
+                                <p class="text-slate-400 text-xs mt-1">Dùng tay/chuột chém các loại quả, tránh bom nổ và tạo chuỗi combo điểm số cao.</p>
+                            </div>
+                            <div class="flex gap-2 pt-2">
+                                <button onclick="openModeSelect('fruit')" class="flex-1 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 font-bold text-xs text-white transition text-center">Chơi ngay</button>
+                                <button onclick="openGuide('fruit')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition"><i class="fa-solid fa-question"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thẻ 2: Đua Xe -->
+                    <div class="bg-slate-900 border border-slate-800 hover:border-fuchsia-500 rounded-2xl overflow-hidden flex flex-col transition duration-300 group">
+                        <div class="h-40 bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center relative overflow-hidden">
+                            <i class="fa-solid fa-car-side text-6xl text-white/90 group-hover:scale-110 transition duration-300"></i>
+                            <span class="absolute top-3 right-3 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-white">Tốc độ</span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Đua Xe Tốc Độ</h3>
+                                <p class="text-slate-400 text-xs mt-1">Lái xe né tránh chướng ngại vật, vượt qua đối thủ AI và cán mốc đích vinh quang.</p>
+                            </div>
+                            <div class="flex gap-2 pt-2">
+                                <button onclick="openModeSelect('car')" class="flex-1 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 font-bold text-xs text-white transition text-center">Chơi ngay</button>
+                                <button onclick="openGuide('car')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition"><i class="fa-solid fa-question"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thẻ 3: Rắn Săn Mồi -->
+                    <div class="bg-slate-900 border border-slate-800 hover:border-fuchsia-500 rounded-2xl overflow-hidden flex flex-col transition duration-300 group">
+                        <div class="h-40 bg-gradient-to-br from-emerald-600 to-green-500 flex items-center justify-center relative overflow-hidden">
+                            <i class="fa-solid fa-worm text-6xl text-white/90 group-hover:rotate-45 transition duration-300"></i>
+                            <span class="absolute top-3 right-3 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-white">Cổ điển</span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Rắn Săn Mồi</h3>
+                                <p class="text-slate-400 text-xs mt-1">Điều khiển chú rắn ăn mồi để tăng trưởng dài hơn, cạnh tranh cùng rắn AI thông minh.</p>
+                            </div>
+                            <div class="flex gap-2 pt-2">
+                                <button onclick="openModeSelect('snake')" class="flex-1 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 font-bold text-xs text-white transition text-center">Chơi ngay</button>
+                                <button onclick="openGuide('snake')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition"><i class="fa-solid fa-question"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thẻ 4: Xếp Hình -->
+                    <div class="bg-slate-900 border border-slate-800 hover:border-fuchsia-500 rounded-2xl overflow-hidden flex flex-col transition duration-300 group">
+                        <div class="h-40 bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center relative overflow-hidden">
+                            <i class="fa-solid fa-puzzle-piece text-6xl text-white/90 group-hover:rotate-12 transition duration-300"></i>
+                            <span class="absolute top-3 right-3 bg-black/40 backdrop-blur-sm px-2 py-1 rounded-lg text-xs font-bold text-white">Trí tuệ</span>
+                        </div>
+                        <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Xếp Hình Trượt</h3>
+                                <p class="text-slate-400 text-xs mt-1">Sắp xếp các mảnh ghép thành bức tranh hoàn chỉnh với thời gian và số bước ngắn nhất.</p>
+                            </div>
+                            <div class="flex gap-2 pt-2">
+                                <button onclick="openModeSelect('puzzle')" class="flex-1 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 font-bold text-xs text-white transition text-center">Chơi ngay</button>
+                                <button onclick="openGuide('puzzle')" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition"><i class="fa-solid fa-question"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. MÀN HÌNH CHỌN CHẾ ĐỘ & TÙY CHỈNH -->
+        <section id="modeSelectView" class="hidden flex-1 flex flex-col items-center justify-center max-w-xl mx-auto w-full py-8">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 w-full shadow-2xl relative">
+                <button onclick="goHome()" class="absolute top-4 left-4 text-slate-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Quay lại
+                </button>
+                <div class="text-center mt-4 mb-6">
+                    <h2 id="modeSelectTitle" class="text-2xl sm:text-3xl font-black text-white">Tên Game</h2>
+                    <p class="text-slate-400 text-xs sm:text-sm mt-1">Lựa chọn chế độ và cấu hình trận đấu</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Chế độ chơi</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button id="btnSoloMode" onclick="setPlayMode('solo')" class="py-3 px-4 rounded-xl font-bold text-sm bg-fuchsia-600 text-white border border-fuchsia-500 transition shadow-lg shadow-fuchsia-600/20">
+                                Chơi Một Mình
+                            </button>
+                            <button id="btnAiMode" onclick="setPlayMode('ai')" class="py-3 px-4 rounded-xl font-bold text-sm bg-slate-800 text-slate-300 border border-slate-700 transition">
+                                Đấu Với Máy (AI)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="difficultyContainer">
+                        <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Độ khó / Cấp độ</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button onclick="setDifficulty('easy')" id="diffEasy" class="py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">Dễ</button>
+                            <button onclick="setDifficulty('medium')" id="diffMedium" class="py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white border border-fuchsia-500">Thường</button>
+                            <button onclick="setDifficulty('hard')" id="diffHard" class="py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">Khó</button>
+                        </div>
+                    </div>
+
+                    <!-- Tùy chọn riêng theo từng game -->
+                    <div id="gameSpecificOptions" class="space-y-3">
+                        <!-- Sẽ được điền động bằng JS -->
+                    </div>
+
+                    <button onclick="startGameAction()" class="w-full py-4 rounded-xl bg-gradient-to-r from-fuchsia-600 to-pink-600 font-extrabold text-white text-base shadow-lg shadow-fuchsia-600/40 hover:opacity-95 transition mt-4">
+                        BẮT ĐẦU CHƠI <i class="fa-solid fa-gamepad ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MÀN HÌNH TRẢI NGHIỆM GAME -->
+        <section id="gamePlayView" class="hidden flex-1 flex flex-col items-center justify-center w-full py-2">
+            <!-- Thanh thông tin trạng thái game -->
+            <div class="w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-2xl p-3 sm:p-4 mb-3 flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center space-x-4">
+                    <button onclick="confirmExitGame()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-300 transition">
+                        <i class="fa-solid fa-house mr-1"></i> Thoát
+                    </button>
+                    <div>
+                        <span class="text-xs text-slate-400 block">ĐIỂM SỐ</span>
+                        <span id="currentGameScore" class="text-xl font-black text-fuchsia-400">0</span>
+                    </div>
+                    <div id="aiScoreBox" class="hidden border-l border-slate-700 pl-4">
+                        <span class="text-xs text-slate-400 block">ĐỐI THỦ (AI)</span>
+                        <span id="currentAiScore" class="text-xl font-black text-cyan-400">0</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <div>
+                        <span class="text-xs text-slate-400 block text-right">THỜI GIAN</span>
+                        <span id="currentGameTimer" class="text-xl font-black text-yellow-400">60s</span>
+                    </div>
+                    <button onclick="pauseGame()" id="pauseBtn" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 border border-slate-700">
+                        <i class="fa-solid fa-pause"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Khung chứa canvas hoặc bảng game (Tối ưu Mobile chống tràn) -->
+            <div id="gameCanvasContainer" class="relative bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center w-full max-w-4xl touch-none">
+                <!-- Canvas render game -->
+                <canvas id="gameCanvas" class="w-full h-auto block max-h-[70vh] object-contain"></canvas>
+            </div>
+
+            <!-- Bảng điều khiển cảm ứng dành riêng cho Mobile/Tablet -->
+            <div id="mobileControls" class="w-full max-w-4xl mt-3 hidden">
+                <!-- Render động các nút điều hướng ảo phù hợp từng game -->
+            </div>
+        </section>
+
+        <!-- 4. MÀN HÌNH KẾT QUẢ SAU VÁN -->
+        <section id="gameOverView" class="hidden flex-1 flex flex-col items-center justify-center max-w-md mx-auto w-full py-8">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 w-full text-center shadow-2xl space-y-5">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-fuchsia-600 to-pink-500 mx-auto flex items-center justify-center neon-glow">
+                    <i id="resultIcon" class="fa-solid fa-trophy text-4xl text-white"></i>
+                </div>
+                <div>
+                    <h2 id="resultTitle" class="text-2xl font-black text-white">HOÀN THÀNH TRẬN ĐẤU</h2>
+                    <p id="resultSubtitle" class="text-slate-400 text-xs mt-1">Tuyệt vời! Bạn đã hoàn thành xuất sắc.</p>
+                </div>
+
+                <div class="bg-slate-950/80 rounded-2xl p-4 border border-slate-800 space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Điểm số đạt được:</span>
+                        <span id="finalScoreVal" class="font-extrabold text-fuchsia-400 text-lg">0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="text-slate-400">Kỷ lục cá nhân:</span>
+                        <span id="finalHighScoreVal" class="font-extrabold text-yellow-400 text-lg">0</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-2 pt-2">
+                    <button onclick="restartGame()" class="w-full py-3 rounded-xl bg-gradient-to-r from-fuchsia-600 to-pink-600 font-bold text-white shadow-lg shadow-fuchsia-600/30">
+                        <i class="fa-solid fa-rotate-right mr-2"></i> Chơi Lại
+                    </button>
+                    <button onclick="openModeSelect(currentGameKey)" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-bold text-slate-200 border border-slate-700">
+                        <i class="fa-solid fa-sliders mr-2"></i> Đổi Chế Độ
+                    </button>
+                    <button onclick="goHome()" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 font-bold text-slate-400">
+                        <i class="fa-solid fa-house mr-2"></i> Về Trang Chủ
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. MÀN HÌNH HƯỚNG DẪN -->
+        <section id="guideModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 space-y-4 relative">
+                <button onclick="closeGuide()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <h3 id="guideTitle" class="text-xl font-bold text-fuchsia-400 flex items-center">
+                    <i class="fa-solid fa-book-open mr-2"></i> Hướng Dẫn Chơi
+                </h3>
+                <div id="guideContent" class="text-slate-300 text-sm space-y-2 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
+                    <!-- Render hướng dẫn động -->
+                </div>
+                <button onclick="closeGuide()" class="w-full py-3 rounded-xl bg-fuchsia-600 font-bold text-white">Đã hiểu</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        &copy; 2026 Game Hay 24h. Cổng game giải trí trực tuyến tương thích mọi thiết bị.
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- QUẢN LÝ TRẠNG THÁI & LOCALSTORAGE ---
+        let currentGameKey = 'fruit';
+        let playMode = 'solo'; // 'solo' hoặc 'ai'
+        let difficulty = 'medium'; // 'easy', 'medium', 'hard'
+        let gameConfig = {};
+        let isAudioEnabled = true;
+        let gameInterval = null;
+        let animationFrameId = null;
+
+        // Lưu trữ điểm cao & lịch sử
+        let appData = JSON.parse(localStorage.getItem('gamehay24h_data')) || {
+            highScores: { fruit: 0, car: 0, snake: 0, puzzle: 0 },
+            recent: [],
+            sound: true
+        };
+
+        isAudioEnabled = appData.sound;
+        updateAudioIcon();
+
+        function saveAppData() {
+            localStorage.setItem('gamehay24h_data', JSON.stringify(appData));
+        }
+
+        // --- WEB AUDIO API (KHÔNG CẦN TỆP NGOÀI) ---
+        let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(type) {
+            if (!isAudioEnabled) return;
+            try {
+                initAudio();
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(400, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'score' || type === 'eat') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.08); // A5
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'win') {
+                    const notes = [523.25, 659.25, 783.99, 1046.5];
+                    notes.forEach((freq, idx) => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.frequency.setValueAtTime(freq, now + idx * 0.1);
+                        g.gain.setValueAtTime(0.1, now + idx * 0.1);
+                        g.gain.linearRampToValueAtTime(0.01, now + idx * 0.1 + 0.15);
+                        o.start(now + idx * 0.1);
+                        o.stop(now + idx * 0.1 + 0.15);
+                    });
+                } else if (type === 'gameover' || type === 'crash') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(200, now);
+                    osc.frequency.linearRampToValueAtTime(60, now + 0.4);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.linearRampToValueAtTime(0.01, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }
+            } catch(e) { console.log(e); }
+        }
+
+        function toggleAudio() {
+            isAudioEnabled = !isAudioEnabled;
+            appData.sound = isAudioEnabled;
+            saveAppData();
+            updateAudioIcon();
+            playSound('click');
+        }
+
+        function updateAudioIcon() {
+            const icon = document.getElementById('audioIcon');
+            if (isAudioEnabled) {
+                icon.className = "fa-solid fa-volume-high text-fuchsia-400";
+            } else {
+                icon.className = "fa-solid fa-volume-xmark text-slate-500";
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const themeIcon = document.getElementById('themeIcon');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                themeIcon.className = "fa-solid fa-sun text-yellow-500";
+            } else {
+                html.classList.add('dark');
+                themeIcon.className = "fa-solid fa-moon text-yellow-400";
+            }
+        }
+
+        // --- ĐIỀU HƯỚNG GIAO DIỆN ---
+        function showView(viewId) {
+            ['homeView', 'modeSelectView', 'gamePlayView', 'gameOverView'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
+        function goHome() {
+            stopCurrentGame();
+            showView('homeView');
+            renderHomeStats();
+        }
+
+        function renderHomeStats() {
+            // High scores
+            const hsContainer = document.getElementById('highScoreSummary');
+            const names = { fruit: 'Chém Hoa Quả', car: 'Đua Xe', snake: 'Rắn Săn Mồi', puzzle: 'Xếp Hình' };
+            hsContainer.innerHTML = Object.keys(names).map(k => `
+                <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-400 block text-xs">${names[k]}</span>
+                    <span class="text-fuchsia-400 font-extrabold text-base">${appData.highScores[k] || 0}đ</span>
+                </div>
+            `).join('');
+
+            // Recent
+            const rcContainer = document.getElementById('recentGamesList');
+            if (appData.recent.length === 0) {
+                rcContainer.innerHTML = `<span class="text-slate-500 italic text-xs">Chưa có lịch sử chơi gần đây.</span>`;
+            } else {
+                rcContainer.innerHTML = appData.recent.slice(0, 3).map(r => `
+                    <div class="flex justify-between items-center bg-slate-950/60 px-3 py-2 rounded-xl border border-slate-800">
+                        <span>${names[r.game] || r.game} (${r.mode === 'ai' ? 'Đấu AI' : 'Solo'})</span>
+                        <span class="font-bold text-pink-400">${r.score}đ</span>
+                    </div>
+                `).join('');
+            }
+        }
+        renderHomeStats();
+
+        // --- CẤU HÌNH MÀN HÌNH CHỌN CHẾ ĐỘ ---
+        const gameTitles = { fruit: 'Chém Hoa Quả', car: 'Đua Xe Tốc Độ', snake: 'Rắn Săn Mồi', puzzle: 'Xếp Hình Trượt' };
+
+        function openModeSelect(gameKey) {
+            playSound('click');
+            currentGameKey = gameKey;
+            document.getElementById('modeSelectTitle').innerText = gameTitles[gameKey];
+            
+            // Cài đặt tùy chọn riêng cho từng game
+            const specOpt = document.getElementById('gameSpecificOptions');
+            if (gameKey === 'puzzle') {
+                specOpt.innerHTML = `
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Kích thước lưới ảnh</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setPuzzleGrid(3)" id="grid3" class="py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white border border-fuchsia-500">3 x 3</button>
+                        <button onclick="setPuzzleGrid(4)" id="grid4" class="py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">4 x 4</button>
+                        <button onclick="setPuzzleGrid(5)" id="grid5" class="py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700">5 x 5</button>
+                    </div>
+                `;
+                gameConfig.grid = 3;
+            } else if (gameKey === 'snake') {
+                specOpt.innerHTML = `
+                    <label class="block text-xs font-bold uppercase text-slate-400 mb-2">Màu sắc rắn</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button onclick="setSnakeColor('green')" id="colorGreen" class="py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white">Xanh lá</button>
+                        <button onclick="setSnakeColor('fuchsia')" id="colorFuchsia" class="py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300">Tím neon</button>
+                        <button onclick="setSnakeColor('cyan')" id="colorCyan" class="py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300">Xanh dương</button>
+                    </div>
+                `;
+                gameConfig.snakeColor = '#10b981';
+            } else {
+                specOpt.innerHTML = '';
+            }
+
+            showView('modeSelectView');
+        }
+
+        function setPlayMode(m) {
+            playSound('click');
+            playMode = m;
+            document.getElementById('btnSoloMode').className = m === 'solo' ? "py-3 px-4 rounded-xl font-bold text-sm bg-fuchsia-600 text-white border border-fuchsia-500 shadow-lg shadow-fuchsia-600/20" : "py-3 px-4 rounded-xl font-bold text-sm bg-slate-800 text-slate-300 border border-slate-700";
+            document.getElementById('btnAiMode').className = m === 'ai' ? "py-3 px-4 rounded-xl font-bold text-sm bg-fuchsia-600 text-white border border-fuchsia-500 shadow-lg shadow-fuchsia-600/20" : "py-3 px-4 rounded-xl font-bold text-sm bg-slate-800 text-slate-300 border border-slate-700";
+        }
+
+        function setDifficulty(d) {
+            playSound('click');
+            difficulty = d;
+            ['easy', 'medium', 'hard'].forEach(lev => {
+                const btn = document.getElementById('diff' + lev.charAt(0).toUpperCase() + lev.slice(1));
+                if (lev === d) {
+                    btn.className = "py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white border border-fuchsia-500";
+                } else {
+                    btn.className = "py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700";
+                }
+            });
+        }
+
+        function setPuzzleGrid(size) {
+            playSound('click');
+            gameConfig.grid = size;
+            [3, 4, 5].forEach(s => {
+                const btn = document.getElementById('grid' + s);
+                if (s === size) {
+                    btn.className = "py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white border border-fuchsia-500";
+                } else {
+                    btn.className = "py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 border border-slate-700";
+                }
+            });
+        }
+
+        function setSnakeColor(col) {
+            playSound('click');
+            const mapColors = { green: '#10b981', fuchsia: '#d946ef', cyan: '#06b6d4' };
+            gameConfig.snakeColor = mapColors[col];
+            ['green', 'fuchsia', 'cyan'].forEach(c => {
+                const btn = document.getElementById('color' + c.charAt(0).toUpperCase() + c.slice(1));
+                if (c === col) {
+                    btn.className = "py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white";
+                } else {
+                    btn.className = "py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300";
+                }
+            });
+        }
+
+        function openGuide(key) {
+            playSound('click');
+            const guides = {
+                fruit: { title: "Hướng Dẫn - Chém Hoa Quả", content: "Dùng chuột hoặc ngón tay vuốt trên màn hình để chém các loại quả xuất hiện. Tránh xa bom nếu không sẽ bị trừ điểm/thua ngay lập tức. Chế độ đấu AI sẽ so điểm trực tiếp với máy." },
+                car: { title: "Hướng Dẫn - Đua Xe Tốc Độ", content: "Sử dụng phím mũi tên Trái/Phải (hoặc nút bấm cảm ứng trên mobile) để điều khiển xe né tránh các phương tiện khác trên đường đua. Thu thập vật phẩm tăng tốc để về đích nhanh nhất." },
+                snake: { title: "Hướng Dẫn - Rắn Săn Mồi", content: "Điều khiển chú rắn hướng về thức ăn để dài ra và ghi điểm. Tránh đâm vào tường hoặc thân rắn. Chế độ đấu AI sẽ thi đấu giành mồi với rắn máy." },
+                puzzle: { title: "Hướng Dẫn - Xếp Hình Trượt", content: "Nhấp hoặc chạm vào các ô nằm gần ô trống để trượt chúng về vị trí đúng, hoàn thành bức tranh hoàn chỉnh trong thời gian ngắn nhất." }
+            };
+            document.getElementById('guideTitle').innerHTML = `<i class="fa-solid fa-book-open mr-2"></i> ${guides[key].title}`;
+            document.getElementById('guideContent').innerHTML = `<p>${guides[key].content}</p>`;
+            document.getElementById('guideModal').classList.remove('hidden');
+        }
+
+        function closeGuide() {
+            playSound('click');
+            document.getElementById('guideModal').classList.add('hidden');
+        }
+
+        // --- KHỞI CHẠY TRÒ CHƠI ---
+        function startGameAction() {
+            playSound('click');
+            showView('gamePlayView');
+            stopCurrentGame();
+
+            const aiScoreBox = document.getElementById('aiScoreBox');
+            if (playMode === 'ai') {
+                aiScoreBox.classList.remove('hidden');
+            } else {
+                aiScoreBox.classList.add('hidden');
+            }
+
+            if (currentGameKey === 'fruit') initFruitGame();
+            else if (currentGameKey === 'car') initCarGame();
+            else if (currentGameKey === 'snake') initSnakeGame();
+            else if (currentGameKey === 'puzzle') initPuzzleGame();
+        }
+
+        function stopCurrentGame() {
+            if (gameInterval) clearInterval(gameInterval);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            gameInterval = null;
+            animationFrameId = null;
+        }
+
+        function confirmExitGame() {
+            if (confirm("Bạn có chắc chắn muốn thoát trận đấu hiện tại?")) {
+                stopCurrentGame();
+                goHome();
+            }
+        }
+
+        function pauseGame() {
+            playSound('click');
+            // Tạm dừng logic game nếu cần
+        }
+
+        function finishGame(score) {
+            stopCurrentGame();
+            playSound('win');
+
+            // Cập nhật kỷ lục
+            if (score > (appData.highScores[currentGameKey] || 0)) {
+                appData.highScores[currentGameKey] = score;
+            }
+
+            // Lưu lịch sử
+            appData.recent.unshift({ game: currentGameKey, mode: playMode, score: score, time: new Date().toLocaleTimeString() });
+            if (appData.recent.length > 10) appData.recent.pop();
+            saveAppData();
+
+            // Hiển thị màn hình kết quả
+            document.getElementById('finalScoreVal').innerText = score;
+            document.getElementById('finalHighScoreVal').innerText = appData.highScores[currentGameKey];
+            showView('gameOverView');
+        }
+
+        function restartGame() {
+            playSound('click');
+            startGameAction();
+        }
+
+
+        /* ==========================================================
+           1. GAME CHÉM HOA QUẢ (Tối ưu hóa cảm ứng chạm Mobile)
+           ========================================================== */
+        function initFruitGame() {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 600;
+            canvas.height = 400;
+
+            let score = 0;
+            let aiScore = 0;
+            let timeLeft = difficulty === 'easy' ? 45 : difficulty === 'medium' ? 30 : 20;
+            let fruits = [];
+            let slices = [];
+            let isRunning = true;
+
+            document.getElementById('currentGameScore').innerText = score;
+            document.getElementById('currentAiScore').innerText = aiScore;
+            document.getElementById('currentGameTimer').innerText = timeLeft + 's';
+
+            // Tạo hoa quả định kỳ
+            const spawnInterval = setInterval(() => {
+                if (!isRunning) return;
+                const types = ['🍎', '🍌', '🍉', '🍊', '🍇', '💣'];
+                const isBomb = Math.random() < (difficulty === 'hard' ? 0.35 : 0.2);
+                fruits.push({
+                    x: Math.random() * (canvas.width - 100) + 50,
+                    y: canvas.height + 30,
+                    vx: (Math.random() - 0.5) * 4,
+                    vy: -Math.random() * 5 - (difficulty === 'hard' ? 10 : 8),
+                    radius: 30,
+                    symbol: isBomb ? '💣' : types[Math.floor(Math.random() * (types.length - 1))],
+                    isBomb: isBomb,
+                    sliced: false
+                });
+            }, difficulty === 'easy' ? 1200 : difficulty === 'medium' ? 900 : 700);
+
+            // Đồng hồ đếm ngược
+            const timerInterval = setInterval(() => {
+                if (!isRunning) return;
+                timeLeft--;
+                document.getElementById('currentGameTimer').innerText = timeLeft + 's';
+
+                // AI tự động ghi điểm nếu chơi chế độ AI
+                if (playMode === 'ai') {
+                    if (Math.random() < 0.7) aiScore += Math.floor(Math.random() * 3) + 1;
+                    document.getElementById('currentAiScore').innerText = aiScore;
+                }
+
+                if (timeLeft <= 0) {
+                    isRunning = false;
+                    clearInterval(spawnInterval);
+                    clearInterval(timerInterval);
+                    finishGame(score);
+                }
+            }, 1000);
+            gameInterval = timerInterval;
+
+            // Xử lý sự kiện chém bằng chuột và chạm di động
+            let isDragging = false;
+            function handleTouchMove(e) {
+                if (!isRunning) return;
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                const x = (clientX - rect.left) * (canvas.width / rect.width);
+                const y = (clientY - rect.top) * (canvas.height / rect.height);
+
+                slices.push({ x, y, alpha: 1 });
+
+                fruits.forEach(f => {
+                    if (!f.sliced && Math.hypot(f.x - x, f.y - y) < f.radius + 15) {
+                        f.sliced = true;
+                        if (f.isBomb) {
+                            playSound('crash');
+                            score = Math.max(0, score - 5);
+                        } else {
+                            playSound('score');
+                            score += 10;
+                        }
+                        document.getElementById('currentGameScore').innerText = score;
+                    }
+                });
+            }
+
+            canvas.onmousedown = () => isDragging = true;
+            window.onmouseup = () => isDragging = false;
+            canvas.onmousemove = (e) => { if (isDragging) handleTouchMove(e); };
+            canvas.ontouchstart = (e) => { isDragging = true; handleTouchMove(e); };
+            canvas.ontouchmove = handleTouchMove;
+            canvas.ontouchend = () => isDragging = false;
+
+            // Vòng lặp render
+            function loop() {
+                if (!isRunning) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Render background vạch sọc arcade
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Render hoa quả
+                fruits.forEach((f, index) => {
+                    f.x += f.vx;
+                    f.y += f.vy;
+                    f.vy += 0.3; // trọng lực
+
+                    ctx.font = '36px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(f.symbol, f.x, f.y);
+
+                    if (f.y > canvas.height + 60) fruits.splice(index, 1);
+                });
+
+                // Render vệt chém
+                ctx.strokeStyle = '#d946ef';
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                slices.forEach((s, idx) => {
+                    s.alpha -= 0.05;
+                    if (idx === 0) ctx.moveTo(s.x, s.y);
+                    else ctx.lineTo(s.x, s.y);
+                });
+                ctx.stroke();
+                slices = slices.filter(s => s.alpha > 0);
+
+                animationFrameId = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+
+        /* ==========================================================
+           2. GAME ĐUA XE (Nút bấm cảm ứng Mobile tối ưu)
+           ========================================================== */
+        function initCarGame() {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 400;
+            canvas.height = 600;
+
+            let score = 0;
+            let aiScore = 0;
+            let distance = 0;
+            let isRunning = true;
+            let carX = canvas.width / 2 - 20;
+            let obstacles = [];
+            let roadLaneSpeed = difficulty === 'easy' ? 4 : difficulty === 'medium' ? 7 : 10;
+
+            document.getElementById('currentGameScore').innerText = score;
+            document.getElementById('currentGameTimer').innerText = '0m';
+
+            // Tạo nút điều khiển cảm ứng cho Đua Xe
+            const mobileCtrl = document.getElementById('mobileControls');
+            mobileCtrl.classList.remove('hidden');
+            mobileCtrl.innerHTML = `
+                <div class="flex justify-between gap-4">
+                    <button id="btnCarLeft" class="flex-1 py-4 bg-fuchsia-600 active:bg-fuchsia-700 rounded-2xl font-bold text-white text-lg shadow-lg">
+                        <i class="fa-solid fa-arrow-left"></i> TRÁI
+                    </button>
+                    <button id="btnCarRight" class="flex-1 py-4 bg-fuchsia-600 active:bg-fuchsia-700 rounded-2xl font-bold text-white text-lg shadow-lg">
+                        PHẢI <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            `;
+
+            let moveLeft = false;
+            let moveRight = false;
+
+            document.getElementById('btnCarLeft').onpointerdown = () => moveLeft = true;
+            document.getElementById('btnCarLeft').onpointerup = () => moveLeft = false;
+            document.getElementById('btnCarRight').onpointerdown = () => moveRight = true;
+            document.getElementById('btnCarRight').onpointerup = () => moveRight = false;
+
+            window.onkeydown = (e) => {
+                if (e.key === 'ArrowLeft' || e.key === 'a') moveLeft = true;
+                if (e.key === 'ArrowRight' || e.key === 'd') moveRight = true;
+            };
+            window.onkeyup = (e) => {
+                if (e.key === 'ArrowLeft' || e.key === 'a') moveLeft = false;
+                if (e.key === 'ArrowRight' || e.key === 'd') moveRight = false;
+            };
+
+            const obsInterval = setInterval(() => {
+                if (!isRunning) return;
+                const lanes = [60, 180, 300];
+                const laneX = lanes[Math.floor(Math.random() * lanes.length)];
+                obstacles.push({ x: laneX - 20, y: -80, width: 40, height: 70, color: '#ef4444' });
+            }, 1200);
+            gameInterval = obsInterval;
+
+            let roadOffset = 0;
+            function loop() {
+                if (!isRunning) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Đường đua
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Vạch kẻ đường giữa
+                roadOffset = (roadOffset + roadLaneSpeed) % 40;
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 6;
+                ctx.setLineDash([20, 20]);
+                ctx.lineDashOffset = -roadOffset;
+                ctx.beginPath();
+                ctx.moveTo(canvas.width / 2, 0);
+                ctx.lineTo(canvas.width / 2, canvas.height);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Di chuyển xe người chơi
+                if (moveLeft && carX > 30) carX -= 6;
+                if (moveRight && carX < canvas.width - 70) carX += 6;
+
+                // Vẽ xe người chơi
+                ctx.fillStyle = '#d946ef';
+                ctx.fillRect(carX, canvas.height - 100, 40, 70);
+                ctx.fillStyle = '#f472b6';
+                ctx.fillRect(carX + 5, canvas.height - 90, 30, 20); // kính xe
+
+                // Vẽ chướng ngại vật
+                obstacles.forEach((obs, index) => {
+                    obs.y += roadLaneSpeed;
+                    ctx.fillStyle = obs.color;
+                    ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+
+                    // Kiểm tra va chạm
+                    if (
+                        carX < obs.x + obs.width &&
+                        carX + 40 > obs.x &&
+                        canvas.height - 100 < obs.y + obs.height &&
+                        canvas.height - 30 > obs.y
+                    ) {
+                        playSound('crash');
+                        isRunning = false;
+                        document.getElementById('mobileControls').classList.add('hidden');
+                        finishGame(Math.floor(distance / 10));
+                    }
+
+                    if (obs.y > canvas.height) {
+                        obstacles.splice(index, 1);
+                        distance += 100;
+                        score += 10;
+                        document.getElementById('currentGameScore').innerText = score;
+                        document.getElementById('currentGameTimer').innerText = distance + 'm';
+                    }
+                });
+
+                if (playMode === 'ai') {
+                    aiScore += 1;
+                    document.getElementById('currentAiScore').innerText = aiScore;
+                }
+
+                animationFrameId = requestAnimationFrame(loop);
+            }
+            loop();
+        }
+
+
+        /* ==========================================================
+           3. GAME RẮN SĂN MỒI (Hỗ trợ phím ảo Mobile cực nhạy)
+           ========================================================== */
+        function initSnakeGame() {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 400;
+            canvas.height = 400;
+
+            const gridSize = 20;
+            const tileCount = canvas.width / gridSize;
+            let snake = [{ x: 10, y: 10 }];
+            let food = { x: 5, y: 5 };
+            let dx = 1;
+            let dy = 0;
+            let score = 0;
+            let aiScore = 0;
+            let isRunning = true;
+
+            document.getElementById('currentGameScore').innerText = score;
+            document.getElementById('currentGameTimer').innerText = '0';
+
+            // Tạo bộ điều hướng ảo Mobile 4 hướng
+            const mobileCtrl = document.getElementById('mobileControls');
+            mobileCtrl.classList.remove('hidden');
+            mobileCtrl.innerHTML = `
+                <div class="flex flex-col items-center gap-2 max-w-[200px] mx-auto">
+                    <button id="sUp" class="w-16 h-14 bg-fuchsia-600 rounded-xl text-white font-bold text-lg"><i class="fa-solid fa-arrow-up"></i></button>
+                    <div class="flex justify-between w-full gap-4">
+                        <button id="sLeft" class="w-16 h-14 bg-fuchsia-600 rounded-xl text-white font-bold text-lg"><i class="fa-solid fa-arrow-left"></i></button>
+                        <button id="sRight" class="w-16 h-14 bg-fuchsia-600 rounded-xl text-white font-bold text-lg"><i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <button id="sDown" class="w-16 h-14 bg-fuchsia-600 rounded-xl text-white font-bold text-lg"><i class="fa-solid fa-arrow-down"></i></button>
+                </div>
+            `;
+
+            const changeDir = (newDx, newDy) => {
+                if (dx === -newDx && dy === -newDy) return;
+                dx = newDx;
+                dy = newDy;
+            };
+
+            document.getElementById('sUp').onclick = () => changeDir(0, -1);
+            document.getElementById('sDown').onclick = () => changeDir(0, 1);
+            document.getElementById('sLeft').onclick = () => changeDir(-1, 0);
+            document.getElementById('sRight').onclick = () => changeDir(1, 0);
+
+            window.onkeydown = (e) => {
+                if (e.key === 'ArrowUp' || e.key === 'w') changeDir(0, -1);
+                if (e.key === 'ArrowDown' || e.key === 's') changeDir(0, 1);
+                if (e.key === 'ArrowLeft' || e.key === 'a') changeDir(-1, 0);
+                if (e.key === 'ArrowRight' || e.key === 'd') changeDir(1, 0);
+            };
+
+            const speed = difficulty === 'easy' ? 140 : difficulty === 'medium' ? 100 : 70;
+            const snakeInterval = setInterval(() => {
+                if (!isRunning) return;
+
+                const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+                // Va chạm tường hoặc thân
+                if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount || snake.some(s => s.x === head.x && s.y === head.y)) {
+                    playSound('crash');
+                    isRunning = false;
+                    clearInterval(snakeInterval);
+                    document.getElementById('mobileControls').classList.add('hidden');
+                    finishGame(score);
+                    return;
+                }
+
+                snake.unshift(head);
+
+                // Ăn mồi
+                if (head.x === food.x && head.y === food.y) {
+                    playSound('eat');
+                    score += 10;
+                    document.getElementById('currentGameScore').innerText = score;
+                    document.getElementById('currentGameTimer').innerText = snake.length;
+                    food = { x: Math.floor(Math.random() * tileCount), y: Math.floor(Math.random() * tileCount) };
+                } else {
+                    snake.pop();
+                }
+
+                if (playMode === 'ai') {
+                    aiScore += 1;
+                    document.getElementById('currentAiScore').innerText = aiScore;
+                }
+
+                // Render
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Thức ăn
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize - 2, gridSize - 2);
+
+                // Rắn
+                snake.forEach((part, idx) => {
+                    ctx.fillStyle = idx === 0 ? '#f472b6' : (gameConfig.snakeColor || '#10b981');
+                    ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
+                });
+
+            }, speed);
+            gameInterval = snakeInterval;
+        }
+
+
+        /* ==========================================================
+           4. GAME XẾP HÌNH TRƯỢT (Trực quan trên Mobile)
+           ========================================================== */
+        function initPuzzleGame() {
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const gridSize = gameConfig.grid || 3;
+            canvas.width = 360;
+            canvas.height = 360;
+
+            let tiles = [];
+            let emptyIdx = gridSize * gridSize - 1;
+            let steps = 0;
+            let timeLeft = 0;
+            let isRunning = true;
+
+            document.getElementById('currentGameScore').innerText = steps;
+            document.getElementById('currentGameTimer').innerText = '0s';
+
+            // Khởi tạo các ô số trật tự sau đó xáo trộn hợp lệ
+            for (let i = 0; i < gridSize * gridSize; i++) {
+                tiles.push(i);
+            }
+            
+            // Xáo trộn
+            for (let i = 0.5; i > 0; i--) {
+                tiles.sort(() => Math.random() - 0.5);
+            }
+            emptyIdx = tiles.indexOf(gridSize * gridSize - 1);
+
+            const timerInt = setInterval(() => {
+                if (!isRunning) return;
+                timeLeft++;
+                document.getElementById('currentGameTimer').innerText = timeLeft + 's';
+                if (playMode === 'ai') {
+                    document.getElementById('currentAiScore').innerText = timeLeft + 5;
+                }
+            }, 1000);
+            gameInterval = timerInt;
+
+            const tileSize = canvas.width / gridSize;
+
+            function drawPuzzle() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                tiles.forEach((val, idx) => {
+                    const r = Math.floor(idx / gridSize);
+                    const c = idx % gridSize;
+                    if (val === gridSize * gridSize - 1) {
+                        ctx.fillStyle = '#0f172a';
+                        ctx.fillRect(c * tileSize, r * tileSize, tileSize, tileSize);
+                    } else {
+                        ctx.fillStyle = '#d946ef';
+                        ctx.fillRect(c * tileSize + 2, r * tileSize + 2, tileSize - 4, tileSize - 4);
+                        ctx.fillStyle = '#ffffff';
+                        ctx.font = 'bold 28px sans-serif';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(val + 1, c * tileSize + tileSize / 2, r * tileSize + tileSize / 2);
+                    }
+                });
+            }
+
+            canvas.onclick = (e) => {
+                if (!isRunning) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+                const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+                const c = Math.floor(x / tileSize);
+                const r = Math.floor(y / tileSize);
+                const clickedIdx = r * gridSize + c;
+
+                const emptyR = Math.floor(emptyIdx / gridSize);
+                const emptyC = emptyIdx % gridSize;
+
+                // Kiểm tra ô bấm có nằm cạnh ô trống không
+                if (Math.abs(r - emptyR) + Math.abs(c - emptyC) === 1) {
+                    playSound('click');
+                    tiles[emptyIdx] = tiles[clickedIdx];
+                    tiles[clickedIdx] = gridSize * gridSize - 1;
+                    emptyIdx = clickedIdx;
+                    steps++;
+                    document.getElementById('currentGameScore').innerText = steps;
+
+                    drawPuzzle();
+
+                    // Kiểm tra thắng
+                    let win = true;
+                    for (let i = 0; i < tiles.length; i++) {
+                        if (tiles[i] !== i) { win = false; break; }
+                    }
+                    if (win) {
+                        isRunning = false;
+                        clearInterval(timerInt);
+                        setTimeout(() => finishGame(Math.max(100, 1000 - steps * 10 - timeLeft * 5)), 300);
+                    }
+                }
+            };
+
+            drawPuzzle();
+        }
+    </script>
+</body>
+</html>
